@@ -30,20 +30,22 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
       <header className="border-b border-border/70">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <Wordmark />
-          {!hideNav && (
-            <nav className="flex items-center gap-6 text-sm text-muted-foreground">
-              <NavItem to="/dashboard">Studio</NavItem>
-              <NavItem to="/voice">Voice</NavItem>
-              {session && (
-                <button
-                  onClick={signOut}
-                  className="transition-colors hover:text-foreground"
-                >
-                  Sign out
-                </button>
-              )}
-            </nav>
-          )}
+          <nav className="flex items-center gap-6 text-sm text-muted-foreground">
+            {!hideNav && (
+              <>
+                <NavItem to="/dashboard">Studio</NavItem>
+                <NavItem to="/voice">Voice</NavItem>
+              </>
+            )}
+            {session && (
+              <button
+                onClick={signOut}
+                className="transition-colors hover:text-foreground"
+              >
+                Sign out
+              </button>
+            )}
+          </nav>
         </div>
       </header>
       <main className="flex-1">{children}</main>
