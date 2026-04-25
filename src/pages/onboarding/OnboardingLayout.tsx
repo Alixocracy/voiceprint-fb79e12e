@@ -1,6 +1,8 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { ProgressBar } from "@/components/StepIndicator";
 import { Wordmark } from "@/components/AppShell";
+import { clearSession } from "@/integrations/agnic/session";
+import { useAgnicSession } from "@/integrations/agnic/useAgnicSession";
 
 const STEPS = [
   { path: "/onboarding/name", label: "Name your agent" },
@@ -14,24 +16,39 @@ const STEPS = [
 export default function OnboardingLayout() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const session = useAgnicSession();
   const idx = Math.max(
     0,
     STEPS.findIndex((s) => pathname.startsWith(s.path)),
   );
   const stepNumber = idx + 1;
   const label = STEPS[idx]?.label ?? "";
+  const signOut = () => {
+    clearSession();
+    navigate("/", { replace: true });
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border/70">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Wordmark />
-          <button
-            onClick={() => navigate("/")}
-            className="text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Save & exit
-          </button>
+          <div className="flex items-center gap-5">
+            <button
+              onClick={() => navigate("/")}
+              className="text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Save & exit
+            </button>
+            {session && (
+              <button
+                onClick={signOut}
+                className="text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Sign out
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
