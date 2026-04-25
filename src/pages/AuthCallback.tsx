@@ -25,14 +25,14 @@ export default function AuthCallback() {
           console.warn("kya fetch failed", e);
         }
         toast.success("Connected to Agnic.");
-        nav("/dashboard", { replace: true });
+        nav(onboardingComplete ? "/dashboard" : "/onboarding/name", { replace: true });
       } catch (e) {
         console.error(e);
         setStatus("error");
         setMessage(e instanceof Error ? e.message : "Could not connect.");
       }
     })();
-  }, [nav]);
+  }, [nav, onboardingComplete]);
 
   return (
     <AppShell>
