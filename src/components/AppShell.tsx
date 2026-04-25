@@ -1,5 +1,7 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { clearSession } from "@/integrations/agnic/session";
+import { useAgnicSession } from "@/integrations/agnic/useAgnicSession";
 
 export const Wordmark = ({ className }: { className?: string }) => (
   <Link
@@ -17,6 +19,12 @@ export const Wordmark = ({ className }: { className?: string }) => (
 export const AppShell = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const hideNav = location.pathname.startsWith("/onboarding");
+  const session = useAgnicSession();
+  const nav = useNavigate();
+  const signOut = () => {
+    clearSession();
+    nav("/", { replace: true });
+  };
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <header className="border-b border-border/70">
@@ -26,6 +34,14 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
             <nav className="flex items-center gap-6 text-sm text-muted-foreground">
               <NavItem to="/dashboard">Studio</NavItem>
               <NavItem to="/voice">Voice</NavItem>
+              {session && (
+                <button
+                  onClick={signOut}
+                  className="transition-colors hover:text-foreground"
+                >
+                  Sign out
+                </button>
+              )}
             </nav>
           )}
         </div>
