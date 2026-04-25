@@ -17,6 +17,8 @@ export const AGNIC_STORAGE = {
   // Mirror of non-secret identity fields. profiles table will hold these
   // once Supabase auth lands; for now they live in the browser only.
   agnicSub: "agnic.sub",
+  agnicEmail: "agnic.email",
+  agnicName: "agnic.name",
   agnicAgentId: "agnic.agent_id",
   agentEmailAlias: "agnic.agent_email_alias",
   kyaStatus: "agnic.kya_status",
