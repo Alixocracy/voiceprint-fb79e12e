@@ -41,6 +41,9 @@ export default function StepDNA() {
           <p className="font-serif text-2xl leading-snug text-foreground">
             Here's your Voice DNA. Read it, then tell us what's wrong with it.
           </p>
+          <p className="text-sm italic text-muted-foreground leading-relaxed max-w-2xl">
+            {VOICE_DNA_FRAMING_LINE}
+          </p>
           <p className="text-sm text-muted-foreground">
             Plain English. No prompt syntax. Anything you say re-tunes the DNA.
           </p>
