@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { completeAgnicLogin } from "@/integrations/agnic/oauth";
 import { fetchKyaStatus } from "@/integrations/agnic/client";
 import { AppShell } from "@/components/AppShell";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useVoiceprint } from "@/state/store";
 
 export default function AuthCallback() {
   const nav = useNavigate();
+  const onboardingComplete = useVoiceprint((s) => s.onboardingComplete);
   const [status, setStatus] = useState<"working" | "error">("working");
   const [message, setMessage] = useState("Connecting your agent…");
 
