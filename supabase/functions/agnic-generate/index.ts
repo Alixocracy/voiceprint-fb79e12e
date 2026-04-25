@@ -24,7 +24,21 @@ serve(async (req) => {
       `- hookCarousel: 5-7 single-line carousel hooks separated by newlines.\n` +
       `No preamble, no markdown fences. Strictly obey the Black List.`;
 
-    const aiUrl = (Deno.env.get("AGNIC_AI_URL") ?? "").trim() || AGNIC.ai();
+    // Resolve the chat-completions URL. Accept AGNIC_AI_URL as either:
+    //   - a full endpoint ending in /chat/completions, or
+    //   - a base like https://api.agnic.ai or https://api.agnic.ai/v1.
+    // Anything else falls back to the docs default.
+    const rawUrl = (Deno.env.get("AGNIC_AI_URL") ?? "").trim().replace(/\/$/, "");
+    let aiUrl: string;
+    if (!rawUrl) {
+      aiUrl = AGNIC.ai();
+    } else if (rawUrl.endsWith("/chat/completions")) {
+      aiUrl = rawUrl;
+    } else if (rawUrl.endsWith("/v1")) {
+      aiUrl = `${rawUrl}/chat/completions`;
+    } else {
+      aiUrl = `${rawUrl}/v1/chat/completions`;
+    }
     const model = (Deno.env.get("AGNIC_MODEL") ?? "").trim() || "anthropic/claude-sonnet-4.5";
 
     const resp = await fetch(aiUrl, {
