@@ -17,6 +17,8 @@ import {
   scanBlackList,
   suggestTopics,
 } from "@/data/generate";
+import { generateDraft as agnicGenerateDraft, sendEmail as agnicSendEmail } from "@/integrations/agnic/client";
+import { isAuthed } from "@/integrations/agnic/session";
 
 interface VoiceprintState {
   onboardingComplete: boolean;
