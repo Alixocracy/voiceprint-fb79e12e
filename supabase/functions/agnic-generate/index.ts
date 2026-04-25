@@ -24,7 +24,9 @@ serve(async (req) => {
       `- hookCarousel: 5-7 single-line carousel hooks separated by newlines.\n` +
       `No preamble, no markdown fences. Strictly obey the Black List.`;
 
-    const resp = await fetch(AGNIC.ai(), {
+    const aiUrl = (Deno.env.get("AGNIC_AI_URL") ?? "").trim() || AGNIC.ai();
+
+    const resp = await fetch(aiUrl, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${agnic_access_token}`,
@@ -41,10 +43,20 @@ serve(async (req) => {
       }),
     });
 
+    const contentType = resp.headers.get("content-type") ?? "";
+    if (!contentType.includes("application/json")) {
+      const text = await resp.text();
+      console.error("agnic ai gateway returned non-JSON", resp.status, contentType, text.slice(0, 300));
+      return jsonResponse(
+        { error: `Agnic AI gateway returned ${resp.status} ${contentType || "(no content-type)"} from ${aiUrl}. Check AGNIC_AI_URL.` },
+        502,
+      );
+    }
+
     const data = await resp.json();
     if (!resp.ok) {
       console.error("agnic ai gateway error", resp.status, data);
-      return jsonResponse({ error: data?.error?.message ?? "ai gateway error" }, resp.status);
+      return jsonResponse({ error: data?.error?.message ?? data?.error ?? "ai gateway error" }, resp.status);
     }
 
     const raw = data?.choices?.[0]?.message?.content ?? "{}";
