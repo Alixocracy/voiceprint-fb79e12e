@@ -1,4 +1,6 @@
-// Sends an email via Agnic.
+// Sends an email via Agnic Agent Email API (POST /api/agent/email/send).
+// Plain text only per docs. The draft_id correlation is stored locally only —
+// Agnic's send endpoint does not accept arbitrary metadata today.
 // Body: { to, subject, body, draft_id, agnic_access_token }
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { AGNIC, corsHeaders, jsonResponse, requireConfig } from "../_shared/agnic.ts";
@@ -16,6 +18,12 @@ serve(async (req) => {
       return jsonResponse({ error: "missing to, subject, body, or draft_id" }, 400);
     }
 
+    // Tag draft_id into the subject so inbound replies can be correlated back
+    // (Agnic doesn't support custom metadata on send yet).
+    const taggedSubject = subject.includes(`[draft:${draft_id}]`)
+      ? subject
+      : `${subject} [draft:${draft_id}]`;
+
     const resp = await fetch(AGNIC.emailSend(), {
       method: "POST",
       headers: {
@@ -24,20 +32,22 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         to,
-        subject,
+        subject: taggedSubject,
         body,
-        // metadata used to correlate inbound replies back to the draft
-        metadata: { draft_id },
       }),
     });
 
-    const data = await resp.json();
+    const data = await resp.json().catch(() => ({}));
     if (!resp.ok) {
       console.error("agnic email send error", resp.status, data);
       return jsonResponse({ error: data?.error ?? "email send failed" }, resp.status);
     }
 
-    return jsonResponse({ message_id: data.message_id ?? data.id });
+    return jsonResponse({
+      message_id: data.messageId,
+      from: data.from,
+      to: data.to,
+    });
   } catch (e) {
     console.error("agnic-email-send error", e);
     return jsonResponse({ error: e instanceof Error ? e.message : "unknown error" }, 500);

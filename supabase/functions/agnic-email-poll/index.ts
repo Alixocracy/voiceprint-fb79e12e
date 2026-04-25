@@ -1,8 +1,12 @@
-// Polls Agnic email inbox, dedupes via processed_emails, writes edit_requests.
+// Polls Agnic Agent Email inbox (GET /api/agent/email/inbox), dedupes via
+// processed_emails, writes edit_requests. Correlates inbound replies to a
+// draft via the [draft:<id>] tag we attach in agnic-email-send.
 // Body: { agnic_access_token }
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { AGNIC, corsHeaders, jsonResponse, requireConfig } from "../_shared/agnic.ts";
+
+const DRAFT_TAG = /\[draft:([a-zA-Z0-9_-]+)\]/;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -22,7 +26,7 @@ serve(async (req) => {
     const resp = await fetch(`${AGNIC.emailInbox()}?limit=50`, {
       headers: { "Authorization": `Bearer ${agnic_access_token}` },
     });
-    const data = await resp.json();
+    const data = await resp.json().catch(() => ({}));
     if (!resp.ok) {
       console.error("agnic inbox fetch error", resp.status, data);
       return jsonResponse({ error: data?.error ?? "inbox fetch failed" }, resp.status);
@@ -30,18 +34,21 @@ serve(async (req) => {
 
     const messages: Array<{
       id: string;
+      direction?: "inbound" | "outbound";
       from?: string;
-      body?: string;
-      text?: string;
+      to?: string;
       subject?: string;
-      in_reply_to?: { metadata?: { draft_id?: string } };
-      metadata?: { draft_id?: string };
-    }> = data.messages ?? data ?? [];
+      bodyText?: string;
+      bodyHtml?: string | null;
+    }> = data.messages ?? [];
 
     const edits: Array<{ draft_id: string; instruction: string }> = [];
     let processed = 0;
 
     for (const msg of messages) {
+      // Only inbound replies are interesting.
+      if (msg.direction && msg.direction !== "inbound") continue;
+
       // Dedupe.
       const { data: existing } = await supabase
         .from("processed_emails")
@@ -50,11 +57,11 @@ serve(async (req) => {
         .maybeSingle();
       if (existing) continue;
 
-      const draftId = msg.in_reply_to?.metadata?.draft_id ?? msg.metadata?.draft_id;
-      const instruction = (msg.body ?? msg.text ?? "").trim();
+      const tagMatch = (msg.subject ?? "").match(DRAFT_TAG);
+      const draftId = tagMatch?.[1];
+      const instruction = (msg.bodyText ?? "").trim();
 
       if (draftId && instruction) {
-        // Resolve owning user via the draft.
         const { data: draftRow } = await supabase
           .from("drafts")
           .select("user_id")

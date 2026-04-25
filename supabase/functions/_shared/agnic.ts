@@ -10,14 +10,16 @@ export const AGNIC = {
   // OAuth lives on the app host.
   authorize: () => `${AGNIC_HOSTNAME}/oauth/authorize`,
   token: () => `${AGNIC_HOSTNAME}/oauth/token`,
-  // AI Gateway + REST API live on api.agnic.ai per docs.
+  // AI Gateway lives on api.agnic.ai (OpenAI-compatible).
   ai: () => `${AGNIC_API_HOST}/v1/chat/completions`,
-  agents: () => `${AGNIC_API_HOST}/v1/agents`,
-  // NOTE: email/* and kya/* are not in the public Agnic docs (Apr 2026).
-  // Kept here for the existing scaffolding; calls will likely 404 until Agnic ships them.
-  emailSend: () => `${AGNIC_API_HOST}/v1/email/send`,
-  emailInbox: () => `${AGNIC_API_HOST}/v1/email/inbox`,
-  kya: () => `${AGNIC_API_HOST}/v1/kya/status`,
+  // Agent Email REST API.
+  emailGet: () => `${AGNIC_API_HOST}/api/agent/email`,
+  emailInbox: () => `${AGNIC_API_HOST}/api/agent/email/inbox`,
+  emailSend: () => `${AGNIC_API_HOST}/api/agent/email/send`,
+  emailReply: () => `${AGNIC_API_HOST}/api/agent/email/reply`,
+  // KYA / agent identity.
+  identity: () => `${AGNIC_API_HOST}/api/agent/identity`,
+  credential: () => `${AGNIC_API_HOST}/api/agent/credential`,
 };
 
 export const corsHeaders = {
