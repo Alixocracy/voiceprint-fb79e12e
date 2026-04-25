@@ -24,7 +24,7 @@ export default function MyAgents() {
   return (
     <div className="max-w-7xl mx-auto px-8 pt-10 pb-20">
       <header className="mb-8">
-        <h1 className="font-serif text-4xl text-foreground">My Agents</h1>
+        <h1 className="font-serif text-4xl text-foreground">My Agent Skills</h1>
         <p className="font-serif italic text-muted-foreground mt-2">
           skills you can install to extend your agency
         </p>

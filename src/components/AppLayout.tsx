@@ -9,7 +9,7 @@ import { useVoiceprint } from "@/state/store";
 const NAV = [
   { to: "/my-voice",     label: "My Voice",     icon: Mic,        sub: "Create content with your voice DNA." },
   { to: "/my-documents", label: "My Documents", icon: FolderOpen, sub: "Your knowledge base for source material." },
-  { to: "/my-agents",    label: "My Agents",    icon: Sparkles,   sub: "Build assistants for repeat workflows." },
+  { to: "/my-agents",    label: "My Agent Skills", icon: Sparkles, sub: "Build assistants for repeat workflows." },
   { to: "/7-systems",    label: "7 Systems",    icon: LayoutGrid, sub: "Turn expertise into operating systems." },
   { to: "/tools",        label: "Tools",        icon: Wrench,     sub: "Explore apps that extend your agency." },
 ];
