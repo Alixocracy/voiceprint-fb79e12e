@@ -4,9 +4,11 @@ import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useVoiceprint } from "@/state/store";
-import { Mail, Send, Sparkles, ChevronRight } from "lucide-react";
+import { Mail, Send, Sparkles, ChevronRight, ShieldAlert, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { ConnectAgnicButton } from "@/components/ConnectAgnicButton";
+import { useAgnicSession } from "@/integrations/agnic/useAgnicSession";
 
 export default function Dashboard() {
   const nav = useNavigate();
@@ -16,19 +18,31 @@ export default function Dashboard() {
     primaryEmail,
     dna,
     drafts,
-    generateInitialDraft,
+    generateInitialDraftAsync,
   } = useVoiceprint();
   const [topic, setTopic] = useState("");
+  const [sending, setSending] = useState(false);
+  const session = useAgnicSession();
+  const kyaActive = session?.kyaStatus === "active";
 
-  const send = () => {
+  const send = async () => {
     const t = topic.trim();
     if (!t) return;
-    const d = generateInitialDraft(t);
-    setTopic("");
-    toast.success(`${agentName} is on it.`, {
-      description: `Draft will arrive at ${primaryEmail} in a moment.`,
-    });
-    nav(`/draft/${d.id}`);
+    setSending(true);
+    try {
+      const d = await generateInitialDraftAsync(t);
+      setTopic("");
+      toast.success(`${agentName} is on it.`, {
+        description: session
+          ? `Draft sent to ${primaryEmail}.`
+          : `Draft drafted locally. Connect Agnic to email it.`,
+      });
+      nav(`/draft/${d.id}`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not generate draft");
+    } finally {
+      setSending(false);
+    }
   };
 
   const active = drafts.filter((d) => d.status !== "archived");
