@@ -164,7 +164,7 @@ export default function Dashboard() {
                     {dna.summary}
                   </p>
                   <div className="flex flex-wrap gap-1.5 mt-4">
-                    {dna.themes.slice(0, 3).map((t) => (
+                    {dna.writing_voice.three_words.slice(0, 3).map((t) => (
                       <span
                         key={t}
                         className="text-[0.7rem] px-2 py-0.5 rounded-full bg-primary-soft text-primary border border-primary/15"
