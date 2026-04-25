@@ -42,6 +42,10 @@ export default function MyAgents() {
                 support reusable instructions or skill files, such as Claude Code, OpenCode, Codex, Cursor,
                 or Windsurf.
               </p>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-3">
+                The Voice DNA skill can use the same Voice DNA you created here. It needs an API token so
+                your external agent can connect to the Voiceprint API and retrieve your approved voice profile.
+              </p>
             </div>
           </div>
         </div>
@@ -50,11 +54,13 @@ export default function MyAgents() {
           <div className="flex items-start gap-3">
             <Terminal className="size-4 mt-1 text-muted-foreground shrink-0" />
             <div>
-              <h2 className="font-serif text-lg text-foreground">About Perplexity</h2>
-              <p className="text-sm text-muted-foreground leading-relaxed mt-2">
-                Perplexity is strongest as a research and answer engine. Its agent products can take action,
-                but treat these skills as prompts or context there unless direct skill installation is supported.
-              </p>
+              <h2 className="font-serif text-lg text-foreground">Install a skill</h2>
+              <ol className="mt-2 space-y-1.5 text-sm text-muted-foreground leading-relaxed">
+                <li>1. Find the skill you want to add.</li>
+                <li>2. Copy its install command.</li>
+                <li>3. Run it in the agent workspace you use.</li>
+                <li>4. Ask your agent to use that skill on the next workflow.</li>
+              </ol>
             </div>
           </div>
         </aside>
