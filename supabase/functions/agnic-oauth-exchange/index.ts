@@ -35,12 +35,15 @@ serve(async (req) => {
       return jsonResponse({ error: data?.error_description ?? data?.error ?? "token exchange failed" }, resp.status);
     }
 
-    // Expected fields: access_token, refresh_token, expires_in, sub, agent_id, agent_email_alias, kya_status
+    // Expected fields from Agnic: access_token, refresh_token, expires_in,
+    // sub, email, name, agent_id, agent_email_alias, kya_status
     return jsonResponse({
       access_token: data.access_token,
       refresh_token: data.refresh_token,
       expires_in: data.expires_in,
       sub: data.sub,
+      email: data.email,
+      name: data.name,
       agent_id: data.agent_id,
       agent_email_alias: data.agent_email_alias,
       kya_status: data.kya_status ?? "none",
