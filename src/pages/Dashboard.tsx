@@ -50,6 +50,24 @@ export default function Dashboard() {
   return (
     <AppShell>
       <div className="max-w-6xl mx-auto px-6 pt-12 pb-20">
+        {!session && (
+          <div className="mb-6 rounded-xl border border-primary/20 bg-primary-soft/40 px-5 py-4 flex items-center justify-between gap-4">
+            <div>
+              <p className="font-serif text-foreground">Connect Agnic to send drafts to your inbox</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Until then, drafts stay local.</p>
+            </div>
+            <ConnectAgnicButton variant="studio" />
+          </div>
+        )}
+        {session && !kyaActive && (
+          <div className="mb-6 rounded-xl border border-border bg-surface-elevated px-5 py-3 flex items-center gap-3 text-sm text-muted-foreground">
+            <ShieldAlert className="size-4 text-foreground/60 shrink-0" />
+            <span>
+              KYA is <span className="font-mono">{session.kyaStatus ?? "none"}</span>. You can keep drafting; some
+              features unlock once verification completes.
+            </span>
+          </div>
+        )}
         <header className="mb-10 flex items-end justify-between gap-6">
           <div>
             <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-2">
