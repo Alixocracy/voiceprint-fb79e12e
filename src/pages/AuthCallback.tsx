@@ -36,7 +36,7 @@ export default function AuthCallback() {
           setPrimaryEmail(s.email);
         }
         toast.success("Connected to Agnic.");
-        nav(onboardingComplete ? "/dashboard" : "/onboarding/name", { replace: true });
+        nav(onboardingComplete ? "/my-voice" : "/onboarding/name", { replace: true });
       } catch (e) {
         console.error(e);
         setStatus("error");
