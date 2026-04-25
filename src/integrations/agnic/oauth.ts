@@ -45,6 +45,8 @@ export async function completeAgnicLogin(params: URLSearchParams) {
     refreshToken: data.refresh_token,
     expiresAt: data.expires_in ? Date.now() + data.expires_in * 1000 : undefined,
     sub: data.sub,
+    email: data.email,
+    name: data.name,
     agentId: data.agent_id,
     agentEmailAlias: data.agent_email_alias,
     kyaStatus: data.kya_status ?? "none",

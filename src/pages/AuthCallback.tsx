@@ -6,10 +6,15 @@ import { AppShell } from "@/components/AppShell";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useVoiceprint } from "@/state/store";
+import { loadSession } from "@/integrations/agnic/session";
+
+const PLACEHOLDER_EMAIL = "you@yourcompany.com";
 
 export default function AuthCallback() {
   const nav = useNavigate();
   const onboardingComplete = useVoiceprint((s) => s.onboardingComplete);
+  const primaryEmail = useVoiceprint((s) => s.primaryEmail);
+  const setPrimaryEmail = useVoiceprint((s) => s.setPrimaryEmail);
   const [status, setStatus] = useState<"working" | "error">("working");
   const [message, setMessage] = useState("Connecting your agent…");
 
@@ -24,6 +29,12 @@ export default function AuthCallback() {
         } catch (e) {
           console.warn("kya fetch failed", e);
         }
+        // Autofill primary email from Agnic identity if not already set
+        const s = loadSession();
+        const isPlaceholder = !primaryEmail || primaryEmail === PLACEHOLDER_EMAIL;
+        if (s?.email && isPlaceholder) {
+          setPrimaryEmail(s.email);
+        }
         toast.success("Connected to Agnic.");
         nav(onboardingComplete ? "/dashboard" : "/onboarding/name", { replace: true });
       } catch (e) {
@@ -32,7 +43,7 @@ export default function AuthCallback() {
         setMessage(e instanceof Error ? e.message : "Could not connect.");
       }
     })();
-  }, [nav, onboardingComplete]);
+  }, [nav, onboardingComplete, primaryEmail, setPrimaryEmail]);
 
   return (
     <AppShell>

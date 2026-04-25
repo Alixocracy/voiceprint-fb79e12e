@@ -6,6 +6,8 @@ export interface AgnicSession {
   refreshToken?: string;
   expiresAt?: number; // epoch ms
   sub?: string;
+  email?: string;
+  name?: string;
   agentId?: number;
   agentEmailAlias?: string;
   kyaStatus?: "none" | "pending" | "active";
@@ -16,6 +18,8 @@ export function saveSession(s: AgnicSession) {
   if (s.refreshToken) localStorage.setItem(AGNIC_STORAGE.refreshToken, s.refreshToken);
   if (s.expiresAt) localStorage.setItem(AGNIC_STORAGE.expiresAt, String(s.expiresAt));
   if (s.sub) localStorage.setItem(AGNIC_STORAGE.agnicSub, s.sub);
+  if (s.email) localStorage.setItem(AGNIC_STORAGE.agnicEmail, s.email);
+  if (s.name) localStorage.setItem(AGNIC_STORAGE.agnicName, s.name);
   if (s.agentId !== undefined) localStorage.setItem(AGNIC_STORAGE.agnicAgentId, String(s.agentId));
   if (s.agentEmailAlias) localStorage.setItem(AGNIC_STORAGE.agentEmailAlias, s.agentEmailAlias);
   if (s.kyaStatus) localStorage.setItem(AGNIC_STORAGE.kyaStatus, s.kyaStatus);
@@ -32,6 +36,8 @@ export function loadSession(): AgnicSession | null {
     refreshToken: localStorage.getItem(AGNIC_STORAGE.refreshToken) ?? undefined,
     expiresAt: expiresAtRaw ? Number(expiresAtRaw) : undefined,
     sub: localStorage.getItem(AGNIC_STORAGE.agnicSub) ?? undefined,
+    email: localStorage.getItem(AGNIC_STORAGE.agnicEmail) ?? undefined,
+    name: localStorage.getItem(AGNIC_STORAGE.agnicName) ?? undefined,
     agentId: agentIdRaw ? Number(agentIdRaw) : undefined,
     agentEmailAlias: localStorage.getItem(AGNIC_STORAGE.agentEmailAlias) ?? undefined,
     kyaStatus: (localStorage.getItem(AGNIC_STORAGE.kyaStatus) as AgnicSession["kyaStatus"]) ?? undefined,
