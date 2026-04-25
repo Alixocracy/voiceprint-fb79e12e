@@ -77,7 +77,11 @@ serve(async (req) => {
     const raw = data?.choices?.[0]?.message?.content ?? "{}";
     let parsed: any = {};
     try {
-      parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+      if (typeof raw === "string") {
+        parsed = JSON.parse(extractJson(raw));
+      } else {
+        parsed = raw;
+      }
     } catch {
       console.error("agnic-generate: model returned non-JSON", raw);
       return jsonResponse({ error: "model returned non-JSON" }, 502);
