@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Wordmark } from "@/components/AppShell";
 import { useVoiceprint } from "@/state/store";
 import { ArrowRight } from "lucide-react";
+import heroBg from "@/assets/hero-voiceprint.jpg";
 
 export default function Index() {
   const nav = useNavigate();
