@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Wordmark } from "@/components/AppShell";
 import { useVoiceprint } from "@/state/store";
 import { ArrowRight } from "lucide-react";
+import heroBg from "@/assets/hero-voiceprint.jpg";
 
 export default function Index() {
   const nav = useNavigate();
@@ -32,42 +33,58 @@ export default function Index() {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className="max-w-5xl mx-auto px-6 pt-24 pb-20">
-          <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground mb-6">
-            Voiceprint · for leaders who'd rather be themselves than prompt
-          </p>
-          <h1 className="font-serif text-[clamp(2.5rem,5.5vw,4.5rem)] leading-[1.05] tracking-tight text-foreground max-w-4xl">
-            Your voice.
-            <br />
-            <span className="italic text-primary">In writing.</span>
-          </h1>
-          <p className="mt-8 text-lg text-muted-foreground leading-relaxed max-w-xl">
-            A private studio that learns your voice once — then writes from it,
-            forever. Drafts arrive in your inbox. You reply in plain English.
-            No new app to live in.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Button
-              size="xl"
-              variant="studio"
-              onClick={() => nav(onboardingComplete ? "/dashboard" : "/onboarding/name")}
-            >
-              {onboardingComplete ? "Open the studio" : "Build my voice"}
-              <ArrowRight className="size-4" />
-            </Button>
-            {dna && (
-              <button
-                onClick={() => {
-                  if (confirm("Reset the demo? This clears all local data.")) reset();
-                }}
-                className="text-xs text-muted-foreground hover:text-foreground"
+        <section className="relative overflow-hidden">
+          {/* Hero background */}
+          <div className="absolute inset-0 -z-10">
+            <img
+              src={heroBg}
+              alt=""
+              width={1920}
+              height={1280}
+              className="absolute inset-0 w-full h-full object-cover opacity-90"
+            />
+            {/* Veil to keep text legible on the left */}
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/30" />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background" />
+          </div>
+
+          <div className="max-w-5xl mx-auto px-6 pt-28 pb-32">
+            <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground mb-6">
+              Voiceprint · for leaders who'd rather be themselves than prompt
+            </p>
+            <h1 className="font-serif text-[clamp(2.5rem,5.5vw,4.5rem)] leading-[1.05] tracking-tight text-foreground max-w-4xl">
+              Your voice.
+              <br />
+              <span className="italic text-primary">In writing.</span>
+            </h1>
+            <p className="mt-8 text-lg text-muted-foreground leading-relaxed max-w-xl">
+              A private studio that learns your voice once — then writes from it,
+              forever. Drafts arrive in your inbox. You reply in plain English.
+              No new app to live in.
+            </p>
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <Button
+                size="xl"
+                variant="studio"
+                onClick={() => nav(onboardingComplete ? "/dashboard" : "/onboarding/name")}
               >
-                Reset demo
-              </button>
-            )}
-            <span className="text-sm text-muted-foreground font-serif italic">
-              About 20 minutes. Once.
-            </span>
+                {onboardingComplete ? "Open the studio" : "Build my voice"}
+                <ArrowRight className="size-4" />
+              </Button>
+              {dna && (
+                <button
+                  onClick={() => {
+                    if (confirm("Reset the demo? This clears all local data.")) reset();
+                  }}
+                  className="text-xs text-muted-foreground hover:text-foreground"
+                >
+                  Reset demo
+                </button>
+              )}
+              <span className="text-sm text-muted-foreground font-serif italic">
+                About 20 minutes. Once.
+              </span>
+            </div>
           </div>
         </section>
 
