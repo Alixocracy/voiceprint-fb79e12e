@@ -108,10 +108,11 @@ export default function Dashboard() {
                   </p>
                   <Button
                     onClick={send}
-                    disabled={!topic.trim() || !dna}
+                    disabled={!topic.trim() || !dna || sending}
                     variant="studio"
                   >
-                    <Send className="size-3.5" /> Send to agent
+                    {sending ? <Loader2 className="size-3.5 animate-spin" /> : <Send className="size-3.5" />}
+                    {sending ? "Sending…" : "Send to agent"}
                   </Button>
                 </div>
               </div>
