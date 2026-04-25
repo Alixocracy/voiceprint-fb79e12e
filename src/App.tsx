@@ -15,6 +15,7 @@ import StepGallery from "./pages/onboarding/StepGallery.tsx";
 import StepMix from "./pages/onboarding/StepMix.tsx";
 import StepDNA from "./pages/onboarding/StepDNA.tsx";
 import StepWow from "./pages/onboarding/StepWow.tsx";
+import AuthCallback from "./pages/AuthCallback.tsx";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/voice" element={<VoicePage />} />
           <Route path="/draft/:id" element={<DraftDetail />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/onboarding" element={<OnboardingLayout />}>
             <Route index element={<Navigate to="/onboarding/name" replace />} />
             <Route path="name" element={<StepName />} />

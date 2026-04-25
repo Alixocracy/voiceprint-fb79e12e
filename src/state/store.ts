@@ -17,6 +17,8 @@ import {
   scanBlackList,
   suggestTopics,
 } from "@/data/generate";
+import { generateDraft as agnicGenerateDraft, sendEmail as agnicSendEmail } from "@/integrations/agnic/client";
+import { isAuthed } from "@/integrations/agnic/session";
 
 interface VoiceprintState {
   onboardingComplete: boolean;
@@ -72,6 +74,7 @@ interface VoiceprintState {
   dismissMigrationBanner: () => void;
 
   generateInitialDraft: (topic: string) => Draft;
+  generateInitialDraftAsync: (topic: string) => Promise<Draft>;
   createDraft: (topic: string) => Draft;
   appendThread: (draftId: string, entry: Omit<ThreadEntry, "id">) => void;
   regenerateDraft: (draftId: string, instruction: string) => void;
@@ -340,6 +343,58 @@ export const useVoiceprint = create<VoiceprintState>()(
         return draft;
       },
 
+      generateInitialDraftAsync: async (topic) => {
+        const { dna, agentEmailAlias, primaryEmail } = get();
+        if (!dna) throw new Error("DNA must be built first");
+
+        let draftSet;
+        if (isAuthed()) {
+          try {
+            const result = await agnicGenerateDraft({ topic, voiceDna: dna });
+            // Always run Black List enforcement client-side as a safety net.
+            draftSet = {
+              topic,
+              bodyLong: enforceBlackList(result.bodyLong, dna),
+              bodyShort1: enforceBlackList(result.bodyShort1, dna),
+              bodyShort2: enforceBlackList(result.bodyShort2, dna),
+              hookCarousel: enforceBlackList(result.hookCarousel, dna),
+            };
+          } catch (e) {
+            console.warn("Agnic generate failed, falling back to local:", e);
+            draftSet = generateDraftSet({ topic, dna });
+          }
+        } else {
+          draftSet = generateDraftSet({ topic, dna });
+        }
+
+        const id = newId();
+        const draft: Draft = {
+          id,
+          ...draftSet,
+          status: "awaiting_edits",
+          createdAt: new Date().toISOString(),
+          thread: [
+            {
+              id: newId(),
+              kind: "agent_note",
+              at: new Date().toISOString(),
+              body: "Draft sent to your inbox. Reply with edits, or say 'approve' to finalize.",
+            },
+          ],
+        };
+        set((st) => ({ drafts: [draft, ...st.drafts] }));
+
+        if (isAuthed() && primaryEmail) {
+          agnicSendEmail({
+            to: primaryEmail,
+            subject: `Draft: ${topic.slice(0, 60)}`,
+            body: `${draftSet.bodyLong}\n\n— ${agentEmailAlias || "your agent"}\nReply with edits, or say "approve".`,
+            draft_id: id,
+          }).catch((e) => console.warn("agnic email send failed:", e));
+        }
+
+        return draft;
+      },
       createDraft: (topic) => get().generateInitialDraft(topic),
 
       appendThread: (draftId, entry) =>
