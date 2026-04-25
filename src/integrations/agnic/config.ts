@@ -28,10 +28,13 @@ export const AGNIC_STORAGE = {
 // Exported here for documentation; the edge functions duplicate this
 // because they cannot import from src/.
 //
+// OAuth host (AGNIC_HOSTNAME, e.g. https://app.agnic.ai):
 //   AUTHORIZE   = `${hostname}/oauth/authorize`
 //   TOKEN       = `${hostname}/oauth/token`
-//   AI          = `${hostname}/v1/ai/chat/completions`
-//   AGENTS      = `${hostname}/v1/agents`
-//   EMAIL_SEND  = `${hostname}/v1/email/send`
-//   EMAIL_INBOX = `${hostname}/v1/email/inbox`
-//   KYA         = `${hostname}/v1/kya/status`
+//
+// API host (AGNIC_API_HOST, default https://api.agnic.ai per docs):
+//   AI          = `${apiHost}/v1/chat/completions`     (OpenAI-compatible)
+//   AGENTS      = `${apiHost}/v1/agents`
+//   EMAIL_SEND  = `${apiHost}/v1/email/send`           (not in public docs yet)
+//   EMAIL_INBOX = `${apiHost}/v1/email/inbox`          (not in public docs yet)
+//   KYA         = `${apiHost}/v1/kya/status`           (not in public docs yet)
