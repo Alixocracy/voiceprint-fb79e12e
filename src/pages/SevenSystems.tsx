@@ -74,33 +74,47 @@ export default function SevenSystems() {
 
               <h3 className="font-serif text-xl text-foreground mb-4">{week.title}</h3>
 
-              <ul className="space-y-2 mb-5">
-                {week.tasks.map((task, idx) => {
-                  const checked = Boolean(taskCompletion[`${week.week_number}:${idx}`]);
-                  return (
-                    <li key={idx} className="flex items-start gap-3">
-                      <Checkbox
-                        id={`task-${week.week_number}-${idx}`}
-                        checked={checked}
-                        onCheckedChange={() => toggleTask(week.week_number, idx)}
-                        disabled={disabled}
-                        className="mt-0.5"
-                      />
-                      <label
-                        htmlFor={`task-${week.week_number}-${idx}`}
-                        className={cn(
-                          "text-sm leading-relaxed cursor-pointer",
-                          checked ? "text-muted-foreground line-through" : "text-foreground",
-                          disabled && "opacity-60 cursor-not-allowed",
-                        )}
-                        title={disabled ? "Fill in the previous week's check-in to unlock" : undefined}
-                      >
-                        {task}
-                      </label>
-                    </li>
-                  );
-                })}
-              </ul>
+              <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem] mb-5">
+                <ul className="space-y-2">
+                  {week.tasks.map((task, idx) => {
+                    const checked = Boolean(taskCompletion[`${week.week_number}:${idx}`]);
+                    return (
+                      <li key={idx} className="flex items-start gap-3">
+                        <Checkbox
+                          id={`task-${week.week_number}-${idx}`}
+                          checked={checked}
+                          onCheckedChange={() => toggleTask(week.week_number, idx)}
+                          disabled={disabled}
+                          className="mt-0.5"
+                        />
+                        <label
+                          htmlFor={`task-${week.week_number}-${idx}`}
+                          className={cn(
+                            "text-sm leading-relaxed cursor-pointer",
+                            checked ? "text-muted-foreground line-through" : "text-foreground",
+                            disabled && "opacity-60 cursor-not-allowed",
+                          )}
+                          title={disabled ? "Fill in the previous week's check-in to unlock" : undefined}
+                        >
+                          {task}
+                        </label>
+                      </li>
+                    );
+                  })}
+                </ul>
+
+                <aside
+                  className="rounded-lg border border-border bg-background px-4 py-3"
+                  style={{ boxShadow: `inset 3px 0 0 hsl(${sys.hslSolid})` }}
+                >
+                  <p className="text-[0.68rem] uppercase tracking-wider text-muted-foreground mb-1.5">
+                    Guide
+                  </p>
+                  <p className="text-sm leading-relaxed text-foreground">
+                    {week.guide}
+                  </p>
+                </aside>
+              </div>
 
               {(week.suggested_skill_slugs.length > 0 || week.suggested_tool_slugs.length > 0) && (
                 <div className="flex flex-wrap items-center gap-1.5 mb-5">

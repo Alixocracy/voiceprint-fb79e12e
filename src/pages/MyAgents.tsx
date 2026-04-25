@@ -4,7 +4,7 @@ import { SYSTEMS, SYSTEM_ORDER, type SystemKey } from "@/data/systems";
 import { useAgency } from "@/state/agencyStore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Check, Copy, BellRing, Bell } from "lucide-react";
+import { Check, Copy, BellRing, Bell, Bot, Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -29,6 +29,36 @@ export default function MyAgents() {
           skills you can install to extend your agency
         </p>
       </header>
+
+      <section className="mb-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_22rem]">
+        <div className="rounded-xl border border-border bg-surface-elevated p-5">
+          <div className="flex items-start gap-3">
+            <Bot className="size-4 mt-1 text-primary shrink-0" />
+            <div>
+              <h2 className="font-serif text-xl text-foreground">Install skills for your agent</h2>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-2">
+                Use this page to install skills for your Voiceprint agent so it can manage repeat workflows
+                across your 7 Systems. The same skill logic can also travel with you into agentic tools that
+                support reusable instructions or skill files, such as Claude Code, OpenCode, Codex, Cursor,
+                or Windsurf.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <aside className="rounded-xl border border-border bg-background p-5">
+          <div className="flex items-start gap-3">
+            <Terminal className="size-4 mt-1 text-muted-foreground shrink-0" />
+            <div>
+              <h2 className="font-serif text-lg text-foreground">About Perplexity</h2>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-2">
+                Perplexity is strongest as a research and answer engine. Its agent products can take action,
+                but treat these skills as prompts or context there unless direct skill installation is supported.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </section>
 
       <div className="flex flex-wrap gap-2 mb-4">
         <Chip active={filter === "all"} onClick={() => setFilter("all")}>All</Chip>

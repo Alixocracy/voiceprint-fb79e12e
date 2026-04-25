@@ -7,11 +7,11 @@ import { useAgnicSession } from "@/integrations/agnic/useAgnicSession";
 import { useVoiceprint } from "@/state/store";
 
 const NAV = [
-  { to: "/my-voice",    label: "My Voice",     icon: Mic,        sub: "powered by Voiceprint" as string | undefined },
-  { to: "/my-documents", label: "My Documents", icon: FolderOpen, sub: undefined },
-  { to: "/my-agents",    label: "My Agents",    icon: Sparkles,   sub: undefined },
-  { to: "/7-systems",    label: "7 Systems",    icon: LayoutGrid, sub: undefined },
-  { to: "/tools",        label: "Tools",        icon: Wrench,     sub: undefined },
+  { to: "/my-voice",     label: "My Voice",     icon: Mic,        sub: "Create content with your voice DNA." },
+  { to: "/my-documents", label: "My Documents", icon: FolderOpen, sub: "Your knowledge base for source material." },
+  { to: "/my-agents",    label: "My Agents",    icon: Sparkles,   sub: "Build assistants for repeat workflows." },
+  { to: "/7-systems",    label: "7 Systems",    icon: LayoutGrid, sub: "Turn expertise into operating systems." },
+  { to: "/tools",        label: "Tools",        icon: Wrench,     sub: "Explore apps that extend your agency." },
 ];
 
 const STORAGE_KEY = "voiceprint.sidebarCollapsed";
@@ -46,10 +46,10 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex">
+    <div className="min-h-screen bg-background text-foreground">
       <aside
         className={cn(
-          "shrink-0 border-r border-border bg-surface flex flex-col transition-[width] duration-200",
+          "fixed inset-y-0 left-0 z-40 h-dvh shrink-0 border-r border-border bg-surface flex flex-col transition-[width] duration-200",
           collapsed ? "w-16" : "w-60",
         )}
       >
@@ -69,14 +69,14 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-2 py-4 space-y-0.5">
+        <nav className="flex-1 min-h-0 overflow-y-auto px-2 py-4 space-y-0.5">
           {NAV.map((item) => (
             <NavItem key={item.to} {...item} collapsed={collapsed} />
           ))}
         </nav>
 
         {/* Agent footer + Settings */}
-        <div className="border-t border-border px-2 py-3 space-y-1">
+        <div className="shrink-0 border-t border-border px-2 py-3 space-y-1">
           {!collapsed && (agentName || agentEmailAlias) && (
             <div className="px-3 pb-2">
               <p className="text-[0.78rem] font-serif text-foreground truncate">
@@ -118,7 +118,9 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </aside>
 
-      <main className="flex-1 min-w-0">{children}</main>
+      <main className={cn("min-w-0 transition-[margin-left] duration-200", collapsed ? "ml-16" : "ml-60")}>
+        {children}
+      </main>
     </div>
   );
 };
