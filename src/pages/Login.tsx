@@ -9,7 +9,7 @@ export default function Login() {
   const nav = useNavigate();
   const [params] = useSearchParams();
   const onboardingComplete = useVoiceprint((s) => s.onboardingComplete);
-  const redirect = params.get("redirect") ?? (onboardingComplete ? "/dashboard" : "/onboarding/name");
+  const redirect = params.get("redirect") ?? (onboardingComplete ? "/my-voice" : "/onboarding/name");
 
   useEffect(() => {
     if (isAuthed()) nav(redirect, { replace: true });

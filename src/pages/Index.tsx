@@ -10,7 +10,7 @@ export default function Index() {
   const nav = useNavigate();
   const { onboardingComplete, dna, reset } = useVoiceprint();
   const go = () => {
-    const dest = onboardingComplete ? "/dashboard" : "/onboarding/name";
+    const dest = onboardingComplete ? "/my-voice" : "/onboarding/name";
     if (!isAuthed()) {
       nav(`/login?redirect=${encodeURIComponent(dest)}`);
       return;
@@ -25,8 +25,8 @@ export default function Index() {
           <Wordmark />
           <nav className="flex items-center gap-5 text-sm">
             {onboardingComplete && (
-              <Link to="/dashboard" className="text-muted-foreground hover:text-foreground">
-                Studio
+              <Link to="/my-voice" className="text-muted-foreground hover:text-foreground">
+                Open
               </Link>
             )}
             <Button
