@@ -23,9 +23,10 @@ serve(async (req) => {
       state,
       code_challenge,
       code_challenge_method: "S256",
-      // Per docs.agnic.ai/docs/authentication/scopes, only `payments:sign` and
-      // `balance:read` exist. `payments:sign` already grants AI Gateway access.
-      scope: scope ?? "payments:sign balance:read",
+      // Per Agnic Agent Email + KYA reference: payments:sign for AI Gateway,
+      // balance:read for wallet, email:read for /api/agent/email/*, agent:read
+      // for /api/agent/identity + /api/agent/credential.
+      scope: scope ?? "payments:sign balance:read email:read agent:read",
     });
 
     return jsonResponse({ authorize_url: `${AGNIC.authorize()}?${params.toString()}` });
