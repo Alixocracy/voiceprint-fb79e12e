@@ -7,7 +7,12 @@ import { TOOL_BY_SLUG } from "@/data/tools";
 import { useAgency, currentWeek } from "@/state/agencyStore";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { Search } from "lucide-react";
+
+const SYSTEMS_IMAGE_URL =
+  "https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/341jCwjFdXQzsNWcQyDJ/media/69c60ca58d47be55801a7258.png";
 
 export default function SevenSystems() {
   const { ensureSignup, signupAt, taskCompletion, toggleTask, checkins, setCheckin, weeksWithProgress } = useAgency();
@@ -18,11 +23,40 @@ export default function SevenSystems() {
 
   return (
     <div className="max-w-5xl mx-auto px-8 pt-10 pb-20">
-      <header className="mb-6">
-        <h1 className="font-serif text-4xl text-foreground">7 Systems</h1>
-        <p className="font-serif italic text-muted-foreground mt-2">
-          your 12-week plan to build a consulting agency
-        </p>
+      <header className="mb-8 flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+        <div className="max-w-2xl">
+          <h1 className="font-serif text-4xl text-foreground">7 Systems</h1>
+          <p className="text-sm text-muted-foreground leading-relaxed mt-3">
+            A guided 12-week build plan for turning your expertise into a lean, AI-powered
+            consulting business. Each week focuses on one business system, with practical
+            tasks, agent skills, tools, and a check-in to keep momentum visible.
+          </p>
+        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <button
+              type="button"
+              className="group relative w-full max-w-xs overflow-hidden rounded-lg border border-border bg-surface-elevated p-2 md:w-64"
+              aria-label="Zoom seven systems overview image"
+            >
+              <img
+                src={SYSTEMS_IMAGE_URL}
+                alt="Seven systems overview"
+                className="max-h-36 w-full object-contain"
+              />
+              <span className="absolute right-2 top-2 inline-flex size-8 items-center justify-center rounded-full border border-border bg-background/90 text-foreground shadow-sm transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                <Search className="size-4" />
+              </span>
+            </button>
+          </DialogTrigger>
+          <DialogContent className="max-w-5xl p-4">
+            <img
+              src={SYSTEMS_IMAGE_URL}
+              alt="Seven systems overview enlarged"
+              className="max-h-[80vh] w-full object-contain"
+            />
+          </DialogContent>
+        </Dialog>
       </header>
 
       <div className="mb-8">
@@ -115,6 +149,19 @@ export default function SevenSystems() {
                   </p>
                 </aside>
               </div>
+
+              {week.week_number === 1 && (
+                <div className="mb-5 overflow-hidden rounded-lg border border-border bg-background">
+                  <iframe
+                    className="aspect-video w-full"
+                    src="https://www.youtube.com/embed/2-lmDOEfPx4"
+                    title="7 Systems introduction"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
+              )}
 
               {(week.suggested_skill_slugs.length > 0 || week.suggested_tool_slugs.length > 0) && (
                 <div className="flex flex-wrap items-center gap-1.5 mb-5">
