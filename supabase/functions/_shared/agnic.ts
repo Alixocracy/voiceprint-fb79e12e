@@ -1,16 +1,23 @@
 // Shared Agnic constants for edge functions.
-// Hostname is set as a Lovable Cloud secret.
+// AGNIC_HOSTNAME = the OAuth/app host (e.g. https://app.agnic.ai or https://agnic.ai).
+// AGNIC_API_HOST = the REST API host. Per Agnic docs the API lives on https://api.agnic.ai.
+//   Override with the AGNIC_API_HOST secret if Agnic ever moves it.
 export const AGNIC_HOSTNAME = (Deno.env.get("AGNIC_HOSTNAME") ?? "").replace(/\/$/, "");
+export const AGNIC_API_HOST = (Deno.env.get("AGNIC_API_HOST") ?? "https://api.agnic.ai").replace(/\/$/, "");
 export const AGNIC_CLIENT_ID = Deno.env.get("AGNIC_CLIENT_ID") ?? "";
 
 export const AGNIC = {
+  // OAuth lives on the app host.
   authorize: () => `${AGNIC_HOSTNAME}/oauth/authorize`,
   token: () => `${AGNIC_HOSTNAME}/oauth/token`,
-  ai: () => `${AGNIC_HOSTNAME}/v1/ai/chat/completions`,
-  agents: () => `${AGNIC_HOSTNAME}/v1/agents`,
-  emailSend: () => `${AGNIC_HOSTNAME}/v1/email/send`,
-  emailInbox: () => `${AGNIC_HOSTNAME}/v1/email/inbox`,
-  kya: () => `${AGNIC_HOSTNAME}/v1/kya/status`,
+  // AI Gateway + REST API live on api.agnic.ai per docs.
+  ai: () => `${AGNIC_API_HOST}/v1/chat/completions`,
+  agents: () => `${AGNIC_API_HOST}/v1/agents`,
+  // NOTE: email/* and kya/* are not in the public Agnic docs (Apr 2026).
+  // Kept here for the existing scaffolding; calls will likely 404 until Agnic ships them.
+  emailSend: () => `${AGNIC_API_HOST}/v1/email/send`,
+  emailInbox: () => `${AGNIC_API_HOST}/v1/email/inbox`,
+  kya: () => `${AGNIC_API_HOST}/v1/kya/status`,
 };
 
 export const corsHeaders = {

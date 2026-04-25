@@ -25,6 +25,7 @@ serve(async (req) => {
       `No preamble, no markdown fences. Strictly obey the Black List.`;
 
     const aiUrl = (Deno.env.get("AGNIC_AI_URL") ?? "").trim() || AGNIC.ai();
+    const model = (Deno.env.get("AGNIC_MODEL") ?? "").trim() || "anthropic/claude-sonnet-4.5";
 
     const resp = await fetch(aiUrl, {
       method: "POST",
@@ -33,7 +34,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "agnic-default",
+        model,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt },

@@ -23,7 +23,9 @@ serve(async (req) => {
       state,
       code_challenge,
       code_challenge_method: "S256",
-      scope: scope ?? "openid profile email ai:write email:send email:read kya:read",
+      // Per docs.agnic.ai/docs/authentication/scopes, only `payments:sign` and
+      // `balance:read` exist. `payments:sign` already grants AI Gateway access.
+      scope: scope ?? "payments:sign balance:read",
     });
 
     return jsonResponse({ authorize_url: `${AGNIC.authorize()}?${params.toString()}` });
