@@ -30,6 +30,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/voice" element={<VoicePage />} />
           <Route path="/draft/:id" element={<DraftDetail />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/onboarding" element={<OnboardingLayout />}>
             <Route index element={<Navigate to="/onboarding/name" replace />} />
             <Route path="name" element={<StepName />} />
