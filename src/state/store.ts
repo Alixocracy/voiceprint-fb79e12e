@@ -74,6 +74,7 @@ interface VoiceprintState {
   dismissMigrationBanner: () => void;
 
   generateInitialDraft: (topic: string) => Draft;
+  generateInitialDraftAsync: (topic: string) => Promise<Draft>;
   createDraft: (topic: string) => Draft;
   appendThread: (draftId: string, entry: Omit<ThreadEntry, "id">) => void;
   regenerateDraft: (draftId: string, instruction: string) => void;
