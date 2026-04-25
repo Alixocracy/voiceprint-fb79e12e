@@ -30,14 +30,20 @@ export default function Dashboard() {
     if (!t) return;
     setSending(true);
     try {
-      const d = await generateInitialDraftAsync(t);
+      const { draft, warning } = await generateInitialDraftAsync(t);
       setTopic("");
-      toast.success(`${agentName} is on it.`, {
-        description: session
-          ? `Draft sent to ${primaryEmail}.`
-          : `Draft drafted locally. Connect Agnic to email it.`,
-      });
-      nav(`/draft/${d.id}`);
+      if (warning) {
+        toast.error("Agnic AI generation failed — used local stub.", {
+          description: warning,
+        });
+      } else {
+        toast.success(`${agentName} is on it.`, {
+          description: session
+            ? `Draft sent to ${primaryEmail}.`
+            : `Draft drafted locally. Connect Agnic to email it.`,
+        });
+      }
+      nav(`/draft/${draft.id}`);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not generate draft");
     } finally {

@@ -74,7 +74,7 @@ interface VoiceprintState {
   dismissMigrationBanner: () => void;
 
   generateInitialDraft: (topic: string) => Draft;
-  generateInitialDraftAsync: (topic: string) => Promise<Draft>;
+  generateInitialDraftAsync: (topic: string) => Promise<{ draft: Draft; warning: string | null }>;
   createDraft: (topic: string) => Draft;
   appendThread: (draftId: string, entry: Omit<ThreadEntry, "id">) => void;
   regenerateDraft: (draftId: string, instruction: string) => void;
@@ -348,6 +348,7 @@ export const useVoiceprint = create<VoiceprintState>()(
         if (!dna) throw new Error("DNA must be built first");
 
         let draftSet;
+        let agnicError: string | null = null;
         if (isAuthed()) {
           try {
             const result = await agnicGenerateDraft({ topic, voiceDna: dna });
@@ -360,6 +361,7 @@ export const useVoiceprint = create<VoiceprintState>()(
               hookCarousel: enforceBlackList(result.hookCarousel, dna),
             };
           } catch (e) {
+            agnicError = e instanceof Error ? e.message : String(e);
             console.warn("Agnic generate failed, falling back to local:", e);
             draftSet = generateDraftSet({ topic, dna });
           }
@@ -393,7 +395,7 @@ export const useVoiceprint = create<VoiceprintState>()(
           }).catch((e) => console.warn("agnic email send failed:", e));
         }
 
-        return draft;
+        return { draft, warning: agnicError };
       },
       createDraft: (topic) => get().generateInitialDraft(topic),
 
