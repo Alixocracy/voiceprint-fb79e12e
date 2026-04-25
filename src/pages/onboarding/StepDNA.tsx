@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useVoiceprint } from "@/state/store";
 import { VoiceDNAView } from "@/components/VoiceDNAView";
+import { VOICE_DNA_FRAMING_LINE } from "@/data/generate";
 import { Sparkles } from "lucide-react";
 
 const QUICK_EDITS = [
