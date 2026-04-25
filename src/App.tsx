@@ -15,6 +15,7 @@ import StepGallery from "./pages/onboarding/StepGallery.tsx";
 import StepMix from "./pages/onboarding/StepMix.tsx";
 import StepDNA from "./pages/onboarding/StepDNA.tsx";
 import StepWow from "./pages/onboarding/StepWow.tsx";
+import AuthCallback from "./pages/AuthCallback.tsx";
 
 const queryClient = new QueryClient();
 
