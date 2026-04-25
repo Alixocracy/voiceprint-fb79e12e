@@ -4,10 +4,19 @@ import { Wordmark } from "@/components/AppShell";
 import { useVoiceprint } from "@/state/store";
 import { ArrowRight } from "lucide-react";
 import heroBg from "@/assets/hero-voiceprint.jpg";
+import { isAuthed } from "@/integrations/agnic/session";
 
 export default function Index() {
   const nav = useNavigate();
   const { onboardingComplete, dna, reset } = useVoiceprint();
+  const go = () => {
+    const dest = onboardingComplete ? "/dashboard" : "/onboarding/name";
+    if (!isAuthed()) {
+      nav(`/login?redirect=${encodeURIComponent(dest)}`);
+      return;
+    }
+    nav(dest);
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
@@ -23,7 +32,7 @@ export default function Index() {
             <Button
               size="sm"
               variant={onboardingComplete ? "outline" : "default"}
-              onClick={() => nav(onboardingComplete ? "/dashboard" : "/onboarding/name")}
+              onClick={go}
             >
               {onboardingComplete ? "Open studio" : "Begin"}
             </Button>
@@ -66,7 +75,7 @@ export default function Index() {
               <Button
                 size="xl"
                 variant="studio"
-                onClick={() => nav(onboardingComplete ? "/dashboard" : "/onboarding/name")}
+                onClick={go}
               >
                 {onboardingComplete ? "Open the studio" : "Build my voice"}
                 <ArrowRight className="size-4" />

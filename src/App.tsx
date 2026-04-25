@@ -16,6 +16,8 @@ import StepMix from "./pages/onboarding/StepMix.tsx";
 import StepDNA from "./pages/onboarding/StepDNA.tsx";
 import StepWow from "./pages/onboarding/StepWow.tsx";
 import AuthCallback from "./pages/AuthCallback.tsx";
+import Login from "./pages/Login.tsx";
+import { RequireAgnicAuth } from "./components/RequireAgnicAuth.tsx";
 
 const queryClient = new QueryClient();
 
@@ -27,11 +29,12 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/voice" element={<VoicePage />} />
-          <Route path="/draft/:id" element={<DraftDetail />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/onboarding" element={<OnboardingLayout />}>
+          <Route path="/dashboard" element={<RequireAgnicAuth><Dashboard /></RequireAgnicAuth>} />
+          <Route path="/voice" element={<RequireAgnicAuth><VoicePage /></RequireAgnicAuth>} />
+          <Route path="/draft/:id" element={<RequireAgnicAuth><DraftDetail /></RequireAgnicAuth>} />
+          <Route path="/onboarding" element={<RequireAgnicAuth><OnboardingLayout /></RequireAgnicAuth>}>
             <Route index element={<Navigate to="/onboarding/name" replace />} />
             <Route path="name" element={<StepName />} />
             <Route path="substance" element={<StepSubstance />} />
