@@ -75,7 +75,7 @@ export default function Index() {
               <Button
                 size="xl"
                 variant="studio"
-                onClick={() => nav(onboardingComplete ? "/dashboard" : "/onboarding/name")}
+                onClick={go}
               >
                 {onboardingComplete ? "Open the studio" : "Build my voice"}
                 <ArrowRight className="size-4" />
