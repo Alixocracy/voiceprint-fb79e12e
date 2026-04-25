@@ -348,6 +348,7 @@ export const useVoiceprint = create<VoiceprintState>()(
         if (!dna) throw new Error("DNA must be built first");
 
         let draftSet;
+        let agnicError: string | null = null;
         if (isAuthed()) {
           try {
             const result = await agnicGenerateDraft({ topic, voiceDna: dna });
@@ -360,6 +361,7 @@ export const useVoiceprint = create<VoiceprintState>()(
               hookCarousel: enforceBlackList(result.hookCarousel, dna),
             };
           } catch (e) {
+            agnicError = e instanceof Error ? e.message : String(e);
             console.warn("Agnic generate failed, falling back to local:", e);
             draftSet = generateDraftSet({ topic, dna });
           }
