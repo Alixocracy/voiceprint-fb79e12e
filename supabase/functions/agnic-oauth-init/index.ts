@@ -23,7 +23,7 @@ serve(async (req) => {
       state,
       code_challenge,
       code_challenge_method: "S256",
-      scope: scope ?? "ai:write email:send email:read kya:read",
+      scope: scope ?? "openid profile email ai:write email:send email:read kya:read",
     });
 
     return jsonResponse({ authorize_url: `${AGNIC.authorize()}?${params.toString()}` });
