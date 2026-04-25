@@ -14,7 +14,285 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      archetype_selections: {
+        Row: {
+          archetype_id: string
+          created_at: string
+          features_enabled: Json
+          id: string
+          user_id: string
+          weight: number
+        }
+        Insert: {
+          archetype_id: string
+          created_at?: string
+          features_enabled?: Json
+          id?: string
+          user_id: string
+          weight?: number
+        }
+        Update: {
+          archetype_id?: string
+          created_at?: string
+          features_enabled?: Json
+          id?: string
+          user_id?: string
+          weight?: number
+        }
+        Relationships: []
+      }
+      drafts: {
+        Row: {
+          agnic_message_id: string | null
+          body_long: string | null
+          body_short_1: string | null
+          body_short_2: string | null
+          created_at: string
+          hook_carousel: string | null
+          id: string
+          parent_draft_id: string | null
+          status: Database["public"]["Enums"]["draft_status"]
+          topic_id: string | null
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          agnic_message_id?: string | null
+          body_long?: string | null
+          body_short_1?: string | null
+          body_short_2?: string | null
+          created_at?: string
+          hook_carousel?: string | null
+          id?: string
+          parent_draft_id?: string | null
+          status?: Database["public"]["Enums"]["draft_status"]
+          topic_id?: string | null
+          updated_at?: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          agnic_message_id?: string | null
+          body_long?: string | null
+          body_short_1?: string | null
+          body_short_2?: string | null
+          created_at?: string
+          hook_carousel?: string | null
+          id?: string
+          parent_draft_id?: string | null
+          status?: Database["public"]["Enums"]["draft_status"]
+          topic_id?: string | null
+          updated_at?: string
+          user_id?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "drafts_parent_draft_id_fkey"
+            columns: ["parent_draft_id"]
+            isOneToOne: false
+            referencedRelation: "drafts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "drafts_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      edit_requests: {
+        Row: {
+          agnic_message_id: string | null
+          created_at: string
+          draft_id: string
+          id: string
+          instruction_text: string
+          processed_at: string | null
+          regen_draft_id: string | null
+          user_id: string
+        }
+        Insert: {
+          agnic_message_id?: string | null
+          created_at?: string
+          draft_id: string
+          id?: string
+          instruction_text: string
+          processed_at?: string | null
+          regen_draft_id?: string | null
+          user_id: string
+        }
+        Update: {
+          agnic_message_id?: string | null
+          created_at?: string
+          draft_id?: string
+          id?: string
+          instruction_text?: string
+          processed_at?: string | null
+          regen_draft_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "edit_requests_draft_id_fkey"
+            columns: ["draft_id"]
+            isOneToOne: false
+            referencedRelation: "drafts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "edit_requests_regen_draft_id_fkey"
+            columns: ["regen_draft_id"]
+            isOneToOne: false
+            referencedRelation: "drafts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      processed_emails: {
+        Row: {
+          agnic_message_id: string
+          id: string
+          processed_at: string
+        }
+        Insert: {
+          agnic_message_id: string
+          id?: string
+          processed_at?: string
+        }
+        Update: {
+          agnic_message_id?: string
+          id?: string
+          processed_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          agent_email_alias: string | null
+          agent_name: string | null
+          agnic_agent_id: number | null
+          agnic_sub: string | null
+          created_at: string
+          id: string
+          kya_status: Database["public"]["Enums"]["kya_status"]
+          onboarding_completed: boolean
+          primary_email: string | null
+          updated_at: string
+        }
+        Insert: {
+          agent_email_alias?: string | null
+          agent_name?: string | null
+          agnic_agent_id?: number | null
+          agnic_sub?: string | null
+          created_at?: string
+          id: string
+          kya_status?: Database["public"]["Enums"]["kya_status"]
+          onboarding_completed?: boolean
+          primary_email?: string | null
+          updated_at?: string
+        }
+        Update: {
+          agent_email_alias?: string | null
+          agent_name?: string | null
+          agnic_agent_id?: number | null
+          agnic_sub?: string | null
+          created_at?: string
+          id?: string
+          kya_status?: Database["public"]["Enums"]["kya_status"]
+          onboarding_completed?: boolean
+          primary_email?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      topics: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          source: Database["public"]["Enums"]["topic_source"]
+          status: Database["public"]["Enums"]["topic_status"]
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          source?: Database["public"]["Enums"]["topic_source"]
+          status?: Database["public"]["Enums"]["topic_status"]
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          source?: Database["public"]["Enums"]["topic_source"]
+          status?: Database["public"]["Enums"]["topic_status"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      voice_dna: {
+        Row: {
+          created_at: string
+          dna_json: Json
+          id: string
+          summary: string | null
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          dna_json: Json
+          id?: string
+          summary?: string | null
+          updated_at?: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          created_at?: string
+          dna_json?: Json
+          id?: string
+          summary?: string | null
+          updated_at?: string
+          user_id?: string
+          version?: number
+        }
+        Relationships: []
+      }
+      voice_samples: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          title: string | null
+          type: Database["public"]["Enums"]["sample_type"]
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          title?: string | null
+          type: Database["public"]["Enums"]["sample_type"]
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          title?: string | null
+          type?: Database["public"]["Enums"]["sample_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +301,16 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      draft_status:
+        | "drafting"
+        | "awaiting_edits"
+        | "approved"
+        | "archived"
+        | "cancelled"
+      kya_status: "none" | "pending" | "active"
+      sample_type: "best_of" | "story" | "bio" | "long_form"
+      topic_source: "in_app" | "inbound_email"
+      topic_status: "pending" | "generating" | "done" | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +437,18 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      draft_status: [
+        "drafting",
+        "awaiting_edits",
+        "approved",
+        "archived",
+        "cancelled",
+      ],
+      kya_status: ["none", "pending", "active"],
+      sample_type: ["best_of", "story", "bio", "long_form"],
+      topic_source: ["in_app", "inbound_email"],
+      topic_status: ["pending", "generating", "done", "failed"],
+    },
   },
 } as const
