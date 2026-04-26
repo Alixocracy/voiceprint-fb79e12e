@@ -3,13 +3,11 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { AppShell } from "@/components/AppShell";
 import { ConnectAgnicButton } from "@/components/ConnectAgnicButton";
 import { isAuthed } from "@/integrations/agnic/session";
-import { useVoiceprint } from "@/state/store";
 
 export default function Login() {
   const nav = useNavigate();
   const [params] = useSearchParams();
-  const onboardingComplete = useVoiceprint((s) => s.onboardingComplete);
-  const redirect = params.get("redirect") ?? (onboardingComplete ? "/my-voice" : "/onboarding/name");
+  const redirect = params.get("redirect") ?? "/my-voice";
 
   useEffect(() => {
     if (isAuthed()) nav(redirect, { replace: true });

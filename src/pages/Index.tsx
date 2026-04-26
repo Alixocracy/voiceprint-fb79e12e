@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Wordmark } from "@/components/AppShell";
 import { useVoiceprint } from "@/state/store";
@@ -10,7 +10,7 @@ export default function Index() {
   const nav = useNavigate();
   const { onboardingComplete, dna, reset } = useVoiceprint();
   const go = () => {
-    const dest = onboardingComplete ? "/my-voice" : "/onboarding/name";
+    const dest = "/my-voice";
     if (!isAuthed()) {
       nav(`/login?redirect=${encodeURIComponent(dest)}`);
       return;
@@ -24,11 +24,6 @@ export default function Index() {
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <Wordmark />
           <nav className="flex items-center gap-5 text-sm">
-            {onboardingComplete && (
-              <Link to="/my-voice" className="text-muted-foreground hover:text-foreground">
-                Open
-              </Link>
-            )}
             <Button
               size="sm"
               variant={onboardingComplete ? "outline" : "default"}

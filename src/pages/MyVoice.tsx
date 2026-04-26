@@ -71,6 +71,33 @@ export default function MyVoice() {
           </span>
         </div>
       )}
+      {!dna && (
+        <section className="mb-8 rounded-xl border border-primary/25 bg-primary-soft/45 px-7 py-6 md:px-8 md:py-7">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-xs uppercase tracking-[0.18em] text-primary mb-3">
+                First step
+              </p>
+              <h2 className="font-serif text-3xl text-foreground leading-tight">
+                Start by creating your voice.
+              </h2>
+              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                The studio is open so you can look around. Once Voice DNA exists, your agent can
+                draft, chat, and write from your actual examples.
+              </p>
+            </div>
+            <Button
+              size="xl"
+              variant="studio"
+              onClick={() => nav("/onboarding/name")}
+              className="md:self-end shrink-0"
+            >
+              Create Voice DNA
+              <ChevronRight className="size-4" />
+            </Button>
+          </div>
+        </section>
+      )}
 
       <header className="mb-8">
         <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-2">
@@ -100,12 +127,19 @@ export default function MyVoice() {
               <Textarea
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
-                placeholder="A topic, a link, an angle, or just an observation. Plain English."
+                placeholder={
+                  dna
+                    ? "A topic, a link, an angle, or just an observation. Plain English."
+                    : "Create your Voice DNA first, then send topics to your agent."
+                }
                 rows={4}
                 className="text-[0.95rem] leading-relaxed border-0 bg-background focus-visible:ring-0 px-4"
+                disabled={!dna}
               />
               <div className="flex items-center justify-between">
-                <p className="text-xs text-muted-foreground">A draft will land in your inbox.</p>
+                <p className="text-xs text-muted-foreground">
+                  {dna ? "A draft will land in your inbox." : "Voice DNA unlocks drafting and chat."}
+                </p>
                 <Button onClick={send} disabled={!topic.trim() || !dna || sending} variant="studio">
                   {sending ? <Loader2 className="size-3.5 animate-spin" /> : <Send className="size-3.5" />}
                   {sending ? "Sending…" : "Send to agent"}

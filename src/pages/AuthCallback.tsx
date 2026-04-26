@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { completeAgnicLogin } from "@/integrations/agnic/oauth";
 import { fetchKyaStatus } from "@/integrations/agnic/client";
 import { AppShell } from "@/components/AppShell";
@@ -12,7 +12,6 @@ const PLACEHOLDER_EMAIL = "you@yourcompany.com";
 
 export default function AuthCallback() {
   const nav = useNavigate();
-  const onboardingComplete = useVoiceprint((s) => s.onboardingComplete);
   const primaryEmail = useVoiceprint((s) => s.primaryEmail);
   const setPrimaryEmail = useVoiceprint((s) => s.setPrimaryEmail);
   const [status, setStatus] = useState<"working" | "error">("working");
@@ -36,14 +35,14 @@ export default function AuthCallback() {
           setPrimaryEmail(s.email);
         }
         toast.success("Connected to Agnic.");
-        nav(onboardingComplete ? "/my-voice" : "/onboarding/name", { replace: true });
+        nav("/my-voice", { replace: true });
       } catch (e) {
         console.error(e);
         setStatus("error");
         setMessage(e instanceof Error ? e.message : "Could not connect.");
       }
     })();
-  }, [nav, onboardingComplete, primaryEmail, setPrimaryEmail]);
+  }, [nav, primaryEmail, setPrimaryEmail]);
 
   return (
     <AppShell>
