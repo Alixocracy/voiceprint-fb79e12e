@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Wordmark } from "@/components/AppShell";
 import { useVoiceprint } from "@/state/store";
 import { ArrowRight } from "lucide-react";
-import heroBg from "@/assets/hero-voiceprint.jpg";
+import heroBg from "@/assets/hero-voiceprint-v2.png";
 import { isAuthed } from "@/integrations/agnic/session";
 
 export default function Index() {
@@ -42,22 +42,22 @@ export default function Index() {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className="relative overflow-hidden">
+        <section className="relative isolate overflow-hidden bg-background">
           {/* Hero background */}
-          <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 z-0">
             <img
               src={heroBg}
               alt=""
-              width={1920}
-              height={1280}
-              className="absolute inset-0 w-full h-full object-cover opacity-90"
+              width={1672}
+              height={941}
+              className="absolute inset-0 h-full w-full object-cover object-[62%_center] md:object-[68%_center] lg:object-[72%_center]"
             />
             {/* Veil to keep text legible on the left */}
-            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/30" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/10" />
             <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background" />
           </div>
 
-          <div className="max-w-5xl mx-auto px-6 pt-28 pb-32">
+          <div className="relative z-10 max-w-5xl mx-auto px-6 pt-28 pb-32">
             <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground mb-6">
               Voiceprint · for leaders who'd rather be themselves than prompt
             </p>
