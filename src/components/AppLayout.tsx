@@ -1,5 +1,5 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Mic, FolderOpen, Sparkles, LayoutGrid, Wrench, Settings, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { Mic, FolderOpen, Sparkles, LayoutGrid, Wrench, Settings, ChevronsLeft, ChevronsRight, Target } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { clearSession } from "@/integrations/agnic/session";
@@ -12,6 +12,7 @@ const NAV = [
   { to: "/my-agents",    label: "My Agent Skills", icon: Sparkles, sub: "Build assistants for repeat workflows." },
   { to: "/7-systems",    label: "7 Systems",    icon: LayoutGrid, sub: "Turn expertise into operating systems." },
   { to: "/tools",        label: "Tools",        icon: Wrench,     sub: "Explore apps that extend your agency." },
+  { to: "/engagement-os", label: "Engagement OS", icon: Target,   sub: "Track client engagements end to end." },
 ];
 
 const STORAGE_KEY = "voiceprint.sidebarCollapsed";

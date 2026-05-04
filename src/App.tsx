@@ -14,6 +14,7 @@ import ToolsPage from "./pages/ToolsPage.tsx";
 import SettingsPage from "./pages/SettingsPage.tsx";
 import DraftDetail from "./pages/DraftDetail.tsx";
 import VoicePage from "./pages/VoicePage.tsx";
+import EngagementOS from "./pages/EngagementOS.tsx";
 import OnboardingLayout from "./pages/onboarding/OnboardingLayout.tsx";
 import StepName from "./pages/onboarding/StepName.tsx";
 import StepSubstance from "./pages/onboarding/StepSubstance.tsx";
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/my-agents" element={<RequireAgnicAuth><MyAgents /></RequireAgnicAuth>} />
             <Route path="/7-systems" element={<RequireAgnicAuth><SevenSystems /></RequireAgnicAuth>} />
             <Route path="/tools" element={<RequireAgnicAuth><ToolsPage /></RequireAgnicAuth>} />
+            <Route path="/engagement-os" element={<RequireAgnicAuth><EngagementOS /></RequireAgnicAuth>} />
             <Route path="/settings" element={<RequireAgnicAuth><SettingsPage /></RequireAgnicAuth>} />
 
             <Route path="/voice" element={<RequireAgnicAuth><VoicePage /></RequireAgnicAuth>} />
