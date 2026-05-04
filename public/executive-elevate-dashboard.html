@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Executive Elevate · Engagement OS</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --bg-app: #faf8f4;
+  --bg-card: #ffffff;
+  --bg-soft: #f4f2ec;
+  --bg-tertiary: #ebe9e3;
+  --text-1: #1a1a1a;
+  --text-2: #5a5a5a;
+  --text-3: #9a9a9a;
+  --border: rgba(0, 0, 0, 0.07);
+  --border-strong: rgba(0, 0, 0, 0.16);
+  --green: #1a7a4a;
+  --green-bg: #e6f3ec;
+  --amber: #a86700;
+  --amber-bg: #fbefd1;
+  --info: #2c5fd1;
+  --info-bg: #e8eefc;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.05), 0 6px 18px rgba(0, 0, 0, 0.04);
+}
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-app);
+  color: var(--text-1);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 28px 80px;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 0.5px solid var(--border);
+}
+.brand-mark {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--text-1);
+  text-transform: uppercase;
+}
+.brand-mark span {
+  color: var(--text-3);
+  font-weight: 500;
+  margin-left: 8px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.brand-meta {
+  font-size: 12px;
+  color: var(--text-3);
+  letter-spacing: 0.3px;
+}
+
+.lbl {
+  font-size: 11px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  font-weight: 600;
+}
+
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 22px 26px;
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 14px;
+}
+.header-title {
+  font-size: 22px;
+  font-weight: 500;
+  margin-top: 6px;
+  letter-spacing: -0.2px;
+}
+.header-sub {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-top: 4px;
+}
+.header-pct {
+  font-size: 30px;
+  font-weight: 500;
+  margin-top: 4px;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+.header-week {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 14px 6px 6px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+.legend .hint {
+  margin-left: auto;
+  color: var(--text-3);
+  font-size: 11px;
+  letter-spacing: 0.2px;
+}
+.legend-item { display: flex; align-items: center; gap: 7px; }
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-done { background: var(--green); }
+.dot-prog { background: var(--amber); }
+.dot-todo { background: var(--text-3); opacity: 0.45; }
+
+.canvas {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 18px;
+  padding: 22px 26px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+
+svg.journey { display: block; width: 100%; height: auto; }
+
+.station { cursor: pointer; transition: opacity 0.18s; }
+.station:hover { opacity: 0.78; }
+.station .num { font-weight: 500; }
+.s-name { fill: var(--text-1); font-size: 14px; font-weight: 500; }
+.s-meta { fill: var(--text-2); font-size: 11px; }
+.row-label { fill: var(--text-3); font-size: 11px; font-weight: 600; letter-spacing: 0.7px; }
+
+.s-done .bubble { fill: var(--green-bg); stroke: var(--green); }
+.s-done .num { fill: var(--green); }
+.s-prog .bubble { fill: var(--amber-bg); stroke: var(--amber); }
+.s-prog .num { fill: var(--amber); }
+.s-todo .bubble { fill: var(--bg-tertiary); stroke: var(--border-strong); }
+.s-todo .num { fill: var(--text-3); }
+
+.detail {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 26px;
+  box-shadow: var(--shadow-sm);
+}
+.detail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 14px;
+  border-bottom: 0.5px solid var(--border);
+}
+.detail-title {
+  font-size: 19px;
+  font-weight: 500;
+  margin-top: 4px;
+  letter-spacing: -0.1px;
+}
+.detail-sub {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-top: 4px;
+}
+.detail-pct {
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.4px;
+  line-height: 1.1;
+}
+.detail-count {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  font-size: 14px;
+  border-bottom: 0.5px solid var(--border);
+}
+.row:last-child { border-bottom: none; }
+.row-name { flex: 1; }
+.badge {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 5px;
+  background: var(--bg-soft);
+  color: var(--text-2);
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+.foot {
+  margin-top: 28px;
+  font-size: 11px;
+  color: var(--text-3);
+  text-align: center;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="brand">
+    <div class="brand-mark">Executive Elevate <span>· Engagement OS</span></div>
+    <div class="brand-meta">Concept preview · May 2026</div>
+  </div>
+
+  <div class="header-bar">
+    <div>
+      <div class="lbl">Active engagement</div>
+      <div class="header-title">Sarah Chen · Exit to advisor</div>
+      <div class="header-sub">Started 18 March · Wraps 8 September · Weekly cadence on Tuesdays</div>
+    </div>
+    <div style="text-align: right;">
+      <div class="lbl">Overall</div>
+      <div class="header-pct">38%</div>
+      <div class="header-week">Week 6 of 24</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="dot dot-done"></span>Done</span>
+    <span class="legend-item"><span class="dot dot-prog"></span>In progress</span>
+    <span class="legend-item"><span class="dot dot-todo"></span>Not started</span>
+    <span class="hint">Click any station for the checklist</span>
+  </div>
+
+  <div class="canvas">
+    <svg class="journey" viewBox="0 0 900 520">
+      <rect x="0" y="14" width="900" height="142" rx="14" fill="#f4f2ec" opacity="0.7"/>
+      <rect x="0" y="174" width="900" height="142" rx="14" fill="#f4f2ec" opacity="0.7"/>
+      <rect x="0" y="334" width="900" height="142" rx="14" fill="#f4f2ec" opacity="0.7"/>
+
+      <text class="row-label" x="22" y="34">FOUNDATION</text>
+      <text class="row-label" x="22" y="194">GROWTH ENGINE</text>
+      <text class="row-label" x="22" y="354">SCALE AND HANDOVER</text>
+
+      <path d="M 175 95 L 730 95 C 810 95 810 255 730 255 L 175 255 C 95 255 95 415 175 415 L 730 415"
+            stroke="#9a9a9a" stroke-width="2" fill="none" stroke-dasharray="3 7" opacity="0.45" stroke-linecap="round"/>
+
+      <path d="M 175 95 L 730 95 C 810 95 810 255 730 255 L 450 255"
+            stroke="#a86700" stroke-width="3" fill="none" opacity="0.7" stroke-linecap="round"/>
+
+      <g class="station s-done" data-id="s1" onclick="select('s1')">
+        <circle class="bubble" cx="175" cy="95" r="34" stroke-width="1.5"/>
+        <text class="num" x="175" y="95" text-anchor="middle" dominant-baseline="central" font-size="16">01</text>
+        <text class="s-name" x="175" y="150" text-anchor="middle">Engagement setup</text>
+        <text class="s-meta" x="175" y="168" text-anchor="middle">100% · 7 of 7</text>
+      </g>
+
+      <g class="station s-prog" data-id="s2" onclick="select('s2')">
+        <circle class="bubble" cx="450" cy="95" r="34" stroke-width="1.5"/>
+        <text class="num" x="450" y="95" text-anchor="middle" dominant-baseline="central" font-size="16">02</text>
+        <text class="s-name" x="450" y="150" text-anchor="middle">Leadership HQ</text>
+        <text class="s-meta" x="450" y="168" text-anchor="middle">60% · 3 of 5</text>
+      </g>
+
+      <g class="station s-prog" data-id="s3" onclick="select('s3')">
+        <circle class="bubble" cx="725" cy="95" r="34" stroke-width="1.5"/>
+        <text class="num" x="725" y="95" text-anchor="middle" dominant-baseline="central" font-size="16">03</text>
+        <text class="s-name" x="725" y="150" text-anchor="middle">Presence system</text>
+        <text class="s-meta" x="725" y="168" text-anchor="middle">42% · 3 of 7</text>
+      </g>
+
+      <g class="station s-prog" data-id="s4" onclick="select('s4')">
+        <circle class="bubble" cx="725" cy="255" r="34" stroke-width="1.5"/>
+        <text class="num" x="725" y="255" text-anchor="middle" dominant-baseline="central" font-size="16">04</text>
+        <text class="s-name" x="725" y="310" text-anchor="middle">Lead gen system</text>
+        <text class="s-meta" x="725" y="328" text-anchor="middle">8% · 1 of 8</text>
+      </g>
+
+      <g class="station s-prog" data-id="s5" onclick="select('s5')">
+        <circle cx="450" cy="255" r="44" fill="none" stroke="#a86700" stroke-width="1" opacity="0.5" stroke-dasharray="2 3"/>
+        <rect x="410" y="198" width="80" height="22" rx="11" fill="#fbefd1" stroke="#a86700" stroke-width="0.5"/>
+        <text x="450" y="209" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="600" fill="#a86700">In focus</text>
+        <circle class="bubble" cx="450" cy="255" r="34" stroke-width="2.2"/>
+        <text class="num" x="450" y="255" text-anchor="middle" dominant-baseline="central" font-size="16">05</text>
+        <text class="s-name" x="450" y="310" text-anchor="middle">Sales system</text>
+        <text class="s-meta" x="450" y="328" text-anchor="middle">50% · 3 of 6</text>
+      </g>
+
+      <g class="station s-prog" data-id="s6" onclick="select('s6')">
+        <circle class="bubble" cx="175" cy="255" r="34" stroke-width="1.5"/>
+        <text class="num" x="175" y="255" text-anchor="middle" dominant-baseline="central" font-size="16">06</text>
+        <text class="s-name" x="175" y="310" text-anchor="middle">Product system</text>
+        <text class="s-meta" x="175" y="328" text-anchor="middle">33% · 2 of 6</text>
+      </g>
+
+      <g class="station s-todo" data-id="s7" onclick="select('s7')">
+        <circle class="bubble" cx="175" cy="415" r="34" stroke-width="1.5"/>
+        <text class="num" x="175" y="415" text-anchor="middle" dominant-baseline="central" font-size="16">07</text>
+        <text class="s-name" x="175" y="470" text-anchor="middle">Orchestration</text>
+        <text class="s-meta" x="175" y="488" text-anchor="middle">0% · 0 of 5</text>
+      </g>
+
+      <g class="station s-todo" data-id="s8" onclick="select('s8')">
+        <circle class="bubble" cx="450" cy="415" r="34" stroke-width="1.5"/>
+        <text class="num" x="450" y="415" text-anchor="middle" dominant-baseline="central" font-size="16">08</text>
+        <text class="s-name" x="450" y="470" text-anchor="middle">Partnership</text>
+        <text class="s-meta" x="450" y="488" text-anchor="middle">0% · 0 of 6</text>
+      </g>
+
+      <g class="station s-todo" data-id="s9" onclick="select('s9')">
+        <circle class="bubble" cx="725" cy="415" r="34" stroke-width="1.5"/>
+        <text class="num" x="725" y="415" text-anchor="middle" dominant-baseline="central" font-size="16">09</text>
+        <text class="s-name" x="725" y="470" text-anchor="middle">Project handover</text>
+        <text class="s-meta" x="725" y="488" text-anchor="middle">0% · 0 of 7</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="detail">
+    <div class="detail-head">
+      <div>
+        <div class="lbl">Now viewing</div>
+        <div class="detail-title" id="dp-title">05 · Sales system</div>
+        <div class="detail-sub" id="dp-sub">Map the lead experience, build the funnel, lock the scripts</div>
+      </div>
+      <div style="text-align: right;">
+        <div class="detail-pct" id="dp-progress">50%</div>
+        <div class="detail-count" id="dp-count">3 of 6 items</div>
+      </div>
+    </div>
+    <div id="dp-items">
+      <div class="row"><span class="dot dot-done"></span><span class="row-name">Map lead experience end to end</span><span class="badge">Notion</span></div>
+      <div class="row"><span class="dot dot-prog"></span><span class="row-name">Build sales funnel · landing, form, calendar</span><span class="badge">GHL</span></div>
+      <div class="row"><span class="dot dot-done"></span><span class="row-name">Lock screening call script</span><span class="badge">Notion</span></div>
+      <div class="row"><span class="dot dot-prog"></span><span class="row-name">Lock diagnosis call script and canvas</span><span class="badge">Notion</span></div>
+      <div class="row"><span class="dot dot-done"></span><span class="row-name">Build payment pages</span><span class="badge">Stripe</span></div>
+      <div class="row"><span class="dot dot-todo"></span><span class="row-name">Build welcome sequence</span><span class="badge">Instantly</span></div>
+    </div>
+  </div>
+
+  <div class="foot">Executive Elevate · Engagement OS · Concept preview</div>
+
+</div>
+
+<script>
+const data = {
+  s1: {
+    title: '01 · Engagement setup',
+    sub: 'Kickoff, tools, weekly cadence',
+    pct: '100%',
+    count: '7 of 7 items',
+    items: [
+      ['done', 'Hold kick off meeting', 'Calendly'],
+      ['done', 'Finalise onboarding', 'Notion'],
+      ['done', 'Agree roles and responsibilities', 'Notion'],
+      ['done', 'Lock in project timeline', 'Notion'],
+      ['done', 'Set up tools', '—'],
+      ['done', 'Create bookmarks file', 'Notion'],
+      ['done', 'Book weekly meetings', 'Calendly']
+    ]
+  },
+  s2: {
+    title: '02 · Leadership HQ',
+    sub: 'Lock the model, publish viewpoint articles',
+    pct: '60%',
+    count: '3 of 5 items',
+    items: [
+      ['done', 'Complete Elevate modules', 'Elevate'],
+      ['done', 'Lock in business model · agency, B2B', 'Notion'],
+      ['done', 'Launch one page personal website', 'GHL'],
+      ['prog', 'Publish 5 leadership viewpoint articles · 2 of 5', 'LinkedIn'],
+      ['todo', 'Lock what you take to market', 'Notion']
+    ]
+  },
+  s3: {
+    title: '03 · Presence system',
+    sub: 'Landing page, LinkedIn, content distribution',
+    pct: '42%',
+    count: '3 of 7 items',
+    items: [
+      ['done', 'Publish landing page', 'GHL'],
+      ['done', 'Prime LinkedIn profile · hero, banners, header', 'Canva'],
+      ['done', 'Lock 3 pillars of content', 'Notion'],
+      ['prog', 'Build content distribution plan', 'Notion'],
+      ['todo', 'Setup content distribution calendar', 'Notion'],
+      ['todo', 'Build content repurposing system', '—'],
+      ['todo', 'Setup reporting dashboard', '—']
+    ]
+  },
+  s4: {
+    title: '04 · Lead gen system',
+    sub: 'TAM, scoring, LinkedIn and email outreach',
+    pct: '8%',
+    count: '1 of 8 items',
+    items: [
+      ['prog', 'Analyse TAM', 'Clay'],
+      ['todo', 'Lock in lead scoring system', 'Notion'],
+      ['todo', 'Setup LinkedIn messaging sequences', 'Instantly'],
+      ['todo', 'Setup LinkedIn ad', 'LinkedIn'],
+      ['todo', 'Register domains and emails', 'Cloudflare'],
+      ['todo', 'Lock in email outreach campaigns', 'Instantly'],
+      ['todo', 'Create prospect list', 'Clay'],
+      ['todo', 'Launch campaigns and weekly reports', '—']
+    ]
+  },
+  s5: {
+    title: '05 · Sales system',
+    sub: 'Map the lead experience, build the funnel, lock the scripts',
+    pct: '50%',
+    count: '3 of 6 items',
+    items: [
+      ['done', 'Map lead experience end to end', 'Notion'],
+      ['prog', 'Build sales funnel · landing, form, calendar', 'GHL'],
+      ['done', 'Lock screening call script', 'Notion'],
+      ['prog', 'Lock diagnosis call script and canvas', 'Notion'],
+      ['done', 'Build payment pages', 'Stripe'],
+      ['todo', 'Build welcome sequence', 'Instantly']
+    ]
+  },
+  s6: {
+    title: '06 · Product system',
+    sub: 'ICP, offers, pricing, lead magnets, productised service',
+    pct: '33%',
+    count: '2 of 6 items',
+    items: [
+      ['done', 'Lock in ICP and persona', 'Notion'],
+      ['done', 'Lock in core and intro offers', 'Notion'],
+      ['prog', 'Lock in pricing and financial model', 'Excel'],
+      ['todo', 'Create lead magnets · checklist, framework, diagnostic', 'Canva'],
+      ['todo', 'Productise service · master plan, playbooks', 'Notion'],
+      ['todo', 'Register IP and create case study template', '—']
+    ]
+  },
+  s7: {
+    title: '07 · Orchestration',
+    sub: 'Legal, team, cadence at every layer',
+    pct: '0%',
+    count: '0 of 5 items',
+    items: [
+      ['todo', 'Check company legal documents', 'Drive'],
+      ['todo', 'Create team structure', 'Notion'],
+      ['todo', 'Create quarterly and monthly cadence', 'Notion'],
+      ['todo', 'Create weekly cadence', 'Notion'],
+      ['todo', 'Create daily cadence', 'Notion']
+    ]
+  },
+  s8: {
+    title: '08 · Partnership',
+    sub: 'Partner ICP, campaigns, reporting',
+    pct: '0%',
+    count: '0 of 6 items',
+    items: [
+      ['todo', 'Create partner ICP', 'Notion'],
+      ['todo', 'Create partner campaign', 'Notion'],
+      ['todo', 'Create partner prospect list', 'Clay'],
+      ['todo', 'Setup campaigns in tool', 'Instantly'],
+      ['todo', 'Launch the campaigns', 'Instantly'],
+      ['todo', 'Report campaigns weekly', '—']
+    ]
+  },
+  s9: {
+    title: '09 · Project handover',
+    sub: 'Testimonial, handover, feedback, credentials',
+    pct: '0%',
+    count: '0 of 7 items',
+    items: [
+      ['todo', 'Capture testimonial', '—'],
+      ['todo', 'Hold next step meeting', 'Calendly'],
+      ['todo', 'Handover all documents and folders', 'Drive'],
+      ['todo', 'Finalise all payments', 'Stripe'],
+      ['todo', 'Finalise all trainings and recordings', 'Drive'],
+      ['todo', 'Capture feedback · form, interview', 'Notion'],
+      ['todo', 'Handover all credentials', '—']
+    ]
+  }
+};
+
+function select(id) {
+  const s = data[id];
+  if (!s) return;
+  document.getElementById('dp-title').textContent = s.title;
+  document.getElementById('dp-sub').textContent = s.sub;
+  document.getElementById('dp-progress').textContent = s.pct;
+  document.getElementById('dp-count').textContent = s.count;
+  const html = s.items.map(function (item) {
+    const st = item[0], name = item[1], tool = item[2];
+    const badge = (tool && tool !== '—')
+      ? '<span class="badge">' + tool + '</span>'
+      : '<span class="badge" style="opacity:0.45">—</span>';
+    return '<div class="row"><span class="dot dot-' + st + '"></span><span class="row-name">' + name + '</span>' + badge + '</div>';
+  }).join('');
+  document.getElementById('dp-items').innerHTML = html;
+}
+</script>
+
+</body>
+</html>
