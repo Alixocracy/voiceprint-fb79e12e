@@ -224,6 +224,18 @@ export default function MyVoice() {
               <Button onClick={() => nav("/onboarding/name")}>Set up your voice</Button>
             )}
           </div>
+          <div className="border-t border-border pt-4 space-y-2 text-sm">
+            <p>
+              <Link to="/voice" className="text-primary hover:underline">
+                Edit your Voice DNA →
+              </Link>
+            </p>
+            <p>
+              <Link to="/onboarding/name" className="text-primary hover:underline">
+                Re-run onboarding →
+              </Link>
+            </p>
+          </div>
         </aside>
       </div>
     </div>
