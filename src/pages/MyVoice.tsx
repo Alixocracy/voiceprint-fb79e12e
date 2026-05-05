@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useVoiceprint } from "@/state/store";
-import { Mail, Send, Sparkles, ChevronRight, ShieldAlert, Loader2 } from "lucide-react";
+import { Mail, Send, Sparkles, ChevronRight, ShieldAlert, Loader2, Mic, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { ConnectAgnicButton } from "@/components/ConnectAgnicButton";
@@ -187,6 +187,34 @@ export default function MyVoice() {
         </div>
 
         <aside className="space-y-5 lg:sticky lg:top-10">
+          <Link
+            to="/voice"
+            className="flex items-center gap-4 rounded-xl border border-border bg-surface-elevated px-5 py-4 hover:bg-surface transition-colors group"
+          >
+            <div className="size-9 rounded-lg bg-primary-soft flex items-center justify-center shrink-0">
+              <Mic className="size-4 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-foreground">Edit your Voice DNA</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Update your writing samples and style</p>
+            </div>
+            <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground transition-colors shrink-0" />
+          </Link>
+
+          <Link
+            to="/onboarding/name"
+            className="flex items-center gap-4 rounded-xl border border-border bg-surface-elevated px-5 py-4 hover:bg-surface transition-colors group"
+          >
+            <div className="size-9 rounded-lg bg-primary-soft flex items-center justify-center shrink-0">
+              <RefreshCw className="size-4 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-foreground">Re-run onboarding</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Walk through the setup steps again</p>
+            </div>
+            <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground transition-colors shrink-0" />
+          </Link>
+
           <div className="rounded-xl border border-border bg-surface-elevated p-6">
             <div className="flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-muted-foreground mb-3">
               <Mail className="size-3.5" /> Your agent
@@ -223,18 +251,6 @@ export default function MyVoice() {
             ) : (
               <Button onClick={() => nav("/onboarding/name")}>Set up your voice</Button>
             )}
-          </div>
-          <div className="border-t border-border pt-4 space-y-2 text-sm">
-            <p>
-              <Link to="/voice" className="text-primary hover:underline">
-                Edit your Voice DNA →
-              </Link>
-            </p>
-            <p>
-              <Link to="/onboarding/name" className="text-primary hover:underline">
-                Re-run onboarding →
-              </Link>
-            </p>
           </div>
         </aside>
       </div>
